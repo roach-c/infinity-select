@@ -119,7 +119,7 @@
       <g fill="url(#pg)" stroke="url(#pg)">${shapes(0)}</g>
       <ellipse cx="200" cy="200" rx="170" ry="140" fill="url(#pglow)"/>
       <path class="well" d="${hexPath(PADS[2][0], PADS[2][1], PADS[2][2] + 8)}"/>
-      ${[7, 8].map(k => `<path class="well" d="${hexPath(MINIHEX[k][0], MINIHEX[k][1], MINIHEX[k][2] + 5)}"/>`).join('')}
+
       <circle class="well p1" cx="${PADS[0][0]}" cy="${PADS[0][1]}" r="${PADS[0][2] + 8}"/>
       <circle class="well p2" cx="${PADS[1][0]}" cy="${PADS[1][1]}" r="${PADS[1][2] + 8}"/>
     </svg>`;
@@ -134,13 +134,12 @@
     const portal = h('div', 'portal'); portal.innerHTML = plateSVG();
     for (const s of [0, 1]) { const b = pos(h('button', 'pad round ' + (s ? 'p2' : 'p1')), PADS[s]); b.dataset.s = s; b.onclick = () => openPick(s); portal.append(b); }
     { const b = pos(h('button', 'pad hex'), PADS[2], true); b.dataset.s = 2; b.onclick = () => openPick(2); portal.append(b); }
-    for (const s of [7, 8]) { const b = pos(h('button', 'pad hex mini'), MINIHEX[s], true); b.dataset.s = s; b.onclick = () => openPick(s); portal.append(b); }
     for (const s of [3, 4, 5, 6]) { const b = pos(h('button', 'pad chip ' + (s < 5 ? 'p1' : 'p2')), DISCS[s]); b.dataset.s = s; b.onclick = () => openPick(s); portal.append(b); }
 
     const names = h('div', 'names');
     names.append(h('div', 'pname p1'), h('div', 'pname hexname'), h('div', 'pname p2'));
     const base = h('div', 'base');
-    base.append(portal, names, h('div', 'hint', 'Tap a pad to choose. Small hexes stack extra hex discs; small circles are power discs. Changes apply instantly.'));
+    base.append(portal, names, h('div', 'hint', 'Tap a pad to choose. Small circles are power discs. Changes apply instantly.'));
     document.body.append(top, base, picker(), h('div', 'toast'));
   }
   function xBtn(s) {
@@ -180,7 +179,7 @@
     const g = h('div', 'grid'); g.id = 'grid';
     p.append(ph, g); return p;
   }
-  const KINDS = [['char', 'Characters'], ['round', 'Power Discs'], ['hexa', 'Hex Discs'], ['play', 'Play Sets'], ['toy', 'Toy Boxes']];
+  const KINDS = [['char', 'Characters'], ['round', 'Power Discs'], ['play', 'Play Sets'], ['toy', 'Toy Boxes']];
   function defaultKind(s) { return s <= 1 ? 'char' : (s >= 3 && s <= 6) ? 'round' : 'play'; }
   function tabs() {
     const k = $('#kinds'); k.innerHTML = '';
@@ -193,6 +192,7 @@
   function matches(f) {
     const k = f.cat === 0 ? 'char' : f.cat === 1 ? 'play' : f.cat === 3 ? 'toy' : f.disc;
     if (f.variant) return false;               // hide Crystal and Light FX duplicates
+    if (f.disc === 'hexa') return false;       // hex power discs removed from the picker
     if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw)) && !TEST_SETS.test(f.raw)) return false;
     if (LOCKED.test(f.raw)) return false;
     if (f.cat === 3 && BROKEN_TOYBOX.test(f.raw)) return false;
