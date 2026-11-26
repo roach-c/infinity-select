@@ -157,7 +157,7 @@
       if (!f) { b.append(h('span', 'lb', LABEL[s])); return; }
       if (s <= 1) b.append(face(f, 'padface'));
       else { const w = h('div', 'art'), im = img(f.img, f.name); if (f.pos) im.style.objectPosition = f.pos; w.append(im); b.append(w); }
-      if (s <= 2) b.append(xBtn(s));
+      b.append(xBtn(s));                          // every slot gets an X to clear it
     });
     const nm = (s, el) => { const f = info(ST.s[s]); el.innerHTML = ''; el.classList.toggle('empty', !f);
       el.append(h('small', '', s === 2 ? 'Play Set' : 'Player ' + (s + 1)), h('b', '', f ? f.name : 'Empty')); };

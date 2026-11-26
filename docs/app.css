@@ -154,3 +154,12 @@ html,html body{background-color:var(--bg)!important;color:var(--tx)!important}
 .card.nonecard::before{display:none}
 .card.nonecard .nonex{position:absolute;inset:0 0 30% 0;display:grid;place-items:center;font-size:44px;color:var(--mut)}
 .card.nonecard .cn{background:none}
+/* X on the small slots: sits on the rim so it stays tappable */
+.pad.chip,.pad.mini{overflow:visible}
+.pad.chip .x,.pad.mini .x{top:-6px;right:-6px;width:22px;height:22px;font-size:11px;box-shadow:0 0 0 2px #fff}
+.pad.hex.mini{clip-path:none}
+.pad.hex.mini .art,.pad.hex.mini.empty::before{clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.pad.hex.mini:not(.empty){background:none}
+.pad.hex.mini:not(.empty) .art{inset:0;outline:none;box-shadow:none;border:0}
+.pad.hex.mini:not(.empty)::after{content:"";position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--hex);z-index:-1}
+.pad.chip .art{border-radius:50%;overflow:hidden}
