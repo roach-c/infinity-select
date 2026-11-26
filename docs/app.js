@@ -13,7 +13,7 @@
     ['marvel', 'Marvel', 'var(--marvel)'], ['starwars', 'Star Wars', 'var(--starwars)']];
   // Play sets that actually load on this copy (v1.00, no update). Others just flash.
   // Add names here if the 1.06 update gets installed.
-  const PLAYABLE_SETS = [/Twilight of the Republic/i, /Rise Against the Empire/i, /Inside Out Play Set/i, /Marvel Battlegrounds/i, /Finding Dory Play Set/i];   // Battlegrounds confirmed working 2026-11-25; Dory testing
+  const PLAYABLE_SETS = [/Twilight of the Republic/i, /Rise Against the Empire/i, /Inside Out Play Set/i, /Marvel Battlegrounds/i];   // all four tested working 2026-11-25; Finding Dory says "invalid toy", Force Awakens is locked
   // v1.00 still has the 2015 pre-release lock: Force Awakens pieces ask for an activation code
   // from a Disney site that no longer exists, so they can't be used on this copy.
   const LOCKED = /Force Awakens/i;
