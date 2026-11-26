@@ -106,3 +106,6 @@ html,html body{background-color:var(--bg)!important;color:var(--tx)!important}
 .pl .face.hud{position:absolute;top:44px;left:10px;width:54px;height:54px;border:3px solid var(--c);box-shadow:0 0 0 2px #fff;z-index:3}
 .face .fi{position:absolute;max-width:none;object-fit:fill;padding:0!important;inset:auto}
 .card.char .face img.fi{position:absolute}
+/* one frame of a turntable sheet */
+.pl .pic{position:absolute;inset:0;padding:14px 8px 54px;display:flex;align-items:center;justify-content:center;z-index:1;pointer-events:none}
+.pic .fr{position:relative;width:100%;max-height:100%;overflow:hidden}

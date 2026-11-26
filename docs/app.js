@@ -35,7 +35,7 @@
     const u = SW.test(all) ? 'starwars' : MARVEL.test(all) ? 'marvel' : PIXAR.test(all) ? 'pixar' : 'disney';
     // round discs = abilities; hex discs = toys and customization
     const disc = e[1] === 2 ? (/^Ability/i.test(kindOf) ? 'round' : 'hexa') : '';
-    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: IMG[raw] || '', face: FACE[raw] || null };
+    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: (Array.isArray(IMG[raw]) ? IMG[raw][0] : IMG[raw]) || '', frame: Array.isArray(IMG[raw]) ? IMG[raw].slice(1) : null, face: FACE[raw] || null };
   }
   const colorOf = u => (UNI.find(x => x[0] === u) || [])[2] || 'var(--other)';
 
@@ -50,11 +50,25 @@
     if (!f.img) return d;
     if (!f.face) { d.classList.add('whole'); d.append(img(f.img, f.name)); return d; }
     const [cx, cy, sz, w, hh] = f.face, kx = w / (sz * hh), ky = 1 / sz;
+    const [fx, fy, fw, fh] = f.frame || [0, 0, 1, 1];
     const im = img(f.img, f.name); im.className = 'fi';
-    im.style.width = (kx * 100) + '%'; im.style.height = (ky * 100) + '%';
-    im.style.left = ((0.5 - cx * kx) * 100) + '%'; im.style.top = ((0.5 - cy * ky) * 100) + '%';
+    // picture (frame) box in circle units, then the whole sheet relative to it
+    const pl = 0.5 - cx * kx, pt = 0.5 - cy * ky, sw = kx / fw, shh = ky / fh;
+    im.style.width = (sw * 100) + '%'; im.style.height = (shh * 100) + '%';
+    im.style.left = ((pl - fx * sw) * 100) + '%'; im.style.top = ((pt - fy * shh) * 100) + '%';
     d.append(im);
     return d;
+  }
+
+  // full picture; sheets show only their frame
+  function pic(f) {
+    if (!f.frame) return img(f.img, f.name);
+    const [fx, fy, fw, fh] = f.frame, [, , , w, hh] = f.face || [0, 0, 0, 1, 1];
+    const wrap = h('div', 'pic'), fr = h('div', 'fr'); fr.style.aspectRatio = w + ' / ' + hh;
+    const im = img(f.img, f.name);
+    Object.assign(im.style, { position: 'absolute', padding: '0', objectFit: 'fill', maxWidth: 'none', right: 'auto', bottom: 'auto',
+      width: (100 / fw) + '%', height: (100 / fh) + '%', left: (-fx / fw * 100) + '%', top: (-fy / fh * 100) + '%' });
+    fr.append(im); wrap.append(fr); return wrap;
   }
 
   /* ---------- base screen ---------- */
@@ -98,7 +112,7 @@
       const s = +b.dataset.s, f = info(ST.s[s]); b.innerHTML = '';
       b.classList.toggle('empty', !f);
       b.append(h('span', 'tag', s === 0 ? 'P1' : 'P2'));
-      if (f) { b.append(img(f.img, f.name)); if (f.face) b.append(face(f, 'hud')); const n = h('div', 'nm', f.name); n.prepend(h('small', '', f.franchise)); b.append(n, xBtn(s)); }
+      if (f) { b.append(pic(f)); if (f.face) b.append(face(f, 'hud')); const n = h('div', 'nm', f.name); n.prepend(h('small', '', f.franchise)); b.append(n, xBtn(s)); }
       else { b.append(h('div', 'plus', '+'), h('div', 'nm', 'Choose a character')); }
     });
     document.querySelectorAll('.disc').forEach(b => {
@@ -144,6 +158,7 @@
   }
   function matches(f) {
     const k = f.cat === 0 ? 'char' : f.cat === 1 ? 'play' : f.cat === 3 ? 'toy' : f.disc;
+    if (f.variant) return false;               // hide Crystal and Light FX duplicates
     if (!q && k !== kind) return false;
     if (uni !== 'all' && f.uni !== uni) return false;
     if (ver >= 0 && f.ver !== ver) return false;

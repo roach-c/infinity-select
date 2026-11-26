@@ -1,89 +1,148 @@
 {
- "Fantasia - Sorcerer's Apprentice Mickey": [
-  0.42,
-  0.37,
-  0.3
- ],
- "Fantasia - Sorcerer's Apprentice Mickey (Crystal)": [
-  0.42,
-  0.37,
-  0.3
- ],
- "Duck Universe - Donald Duck": [
-  0.42,
-  0.22,
-  0.28
- ],
- "Lilo & Stitch - Stitch": [
-  0.55,
-  0.2,
-  0.32
- ],
- "Star Wars The Clone Wars - Yoda": [
-  0.6,
-  0.32,
-  0.3
- ],
- "Star Wars The Clone Wars - Yoda (Light FX)": [
-  0.6,
-  0.32,
-  0.3
- ],
- "Star Wars Rebels - Ezra Bridger": [
-  0.59,
-  0.28,
-  0.17
- ],
- "Big Hero 6 - Baymax": [
-  0.42,
-  0.18,
-  0.35
- ],
- "Guardians of the Galaxy - Drax the Destroyer": [
-  0.47,
-  0.17,
-  0.28
- ],
- "Guardians of the Galaxy - Ronan the Accuser": [
-  0.36,
-  0.15,
-  0.24
- ],
- "The Avengers - Black Widow": [
-  0.68,
-  0.22,
-  0.3
- ],
- "Tinker Bell - Tinker Bell": [
-  0.39,
-  0.21,
-  0.22
- ],
- "Ultimate Spider-Man - Black Suit Spider-Man": [
-  0.25,
-  0.2,
-  0.3
- ],
- "Ultimate Spider-Man - Spider-Man": [
-  0.48,
-  0.27,
-  0.2
- ],
- "Inside Out - Sadness": [
-  0.42,
-  0.37,
-  0.3
- ],
- "The Good Dinosaur - Spot": [
-  0.45,
-  0.22,
-  0.3
- ],
- "Avengers Age of Ultron - Ultron": [
-  0.55,
-  0.27,
-  0.2
- ],
+ "Fantasia - Sorcerer's Apprentice Mickey": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/4/44/Character-Fantasia-Sorcerer%27s_Apprentice_Mickey.png/revision/latest?cb=20200102202148",
+  "crop": [
+   0.42,
+   0.37,
+   0.3
+  ]
+ },
+ "Fantasia - Sorcerer's Apprentice Mickey (Crystal)": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/4/44/Character-Fantasia-Sorcerer%27s_Apprentice_Mickey.png/revision/latest?cb=20200102202148",
+  "crop": [
+   0.42,
+   0.37,
+   0.3
+  ]
+ },
+ "Duck Universe - Donald Duck": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/1/15/Donald_Ducks_figure.PNG/revision/latest?cb=20140812144523",
+  "crop": [
+   0.4,
+   0.25,
+   0.3
+  ]
+ },
+ "Star Wars The Clone Wars - Yoda": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/f/f7/Character-Twilight-Light_FX_Yoda.jpg/revision/latest/scale-to-width-down/400?cb=20200106015218",
+  "crop": [
+   0.6,
+   0.32,
+   0.3
+  ]
+ },
+ "Star Wars The Clone Wars - Yoda (Light FX)": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/f/f7/Character-Twilight-Light_FX_Yoda.jpg/revision/latest/scale-to-width-down/400?cb=20200106015218",
+  "crop": [
+   0.6,
+   0.32,
+   0.3
+  ]
+ },
+ "Star Wars Rebels - Ezra Bridger": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/2/2c/Character-Rebels-Ezra_Bridger.png/revision/latest/scale-to-width-down/400?cb=20200106201513",
+  "crop": [
+   0.59,
+   0.28,
+   0.17
+  ]
+ },
+ "Big Hero 6 - Baymax": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/d/d9/Baymax-sprite-9cc4a935c556286637c3c2a50694bdd6.png/revision/latest#frame0",
+  "crop": [
+   0.43,
+   0.21,
+   0.3
+  ]
+ },
+ "Guardians of the Galaxy - Drax the Destroyer": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/7/79/Drax-sprite-f779e95e296168effcc59472ac8c424b.png/revision/latest#frame0",
+  "crop": [
+   0.37,
+   0.21,
+   0.25
+  ]
+ },
+ "The Avengers - Black Widow": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/a/af/BlackWidowFigure.png/revision/latest/scale-to-width-down/400?cb=20140501015720",
+  "crop": [
+   0.68,
+   0.22,
+   0.3
+  ]
+ },
+ "Tinker Bell - Tinker Bell": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/9/9d/Tinker_Bell_sprite.png/revision/latest#frame0",
+  "crop": [
+   0.43,
+   0.34,
+   0.2
+  ]
+ },
+ "Ultimate Spider-Man - Black Suit Spider-Man": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/1/11/Character-SpiderMan-Black_Suit_Spider-Man.png/revision/latest/scale-to-width-down/400?cb=20200105220501",
+  "crop": [
+   0.25,
+   0.2,
+   0.3
+  ]
+ },
+ "Inside Out - Sadness": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/2/27/Disney_INFINITY_Sadness_Figure.png/revision/latest/scale-to-width-down/800?cb=20220426040927",
+  "crop": [
+   0.46,
+   0.22,
+   0.3
+  ]
+ },
+ "The Good Dinosaur - Spot": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/b/b2/Spot_Figure.png/revision/latest/scale-to-width-down/318?cb=20151103234240",
+  "crop": [
+   0.45,
+   0.22,
+   0.3
+  ]
+ },
+ "Avengers Age of Ultron - Ultron": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/f/f0/Character-Marvel-Ultron_retail.jpg/revision/latest/scale-to-width-down/400?cb=20200107201137",
+  "crop": [
+   0.55,
+   0.27,
+   0.2
+  ]
+ },
  "Wreck-It Ralph - Vanellope von Schweetz": null,
- "Peter Pan - Peter Pan": null
+ "Peter Pan - Peter Pan": null,
+ "Big Hero 6 - Hiro Hamada": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/f/f2/Hiro_Render_2.png/revision/latest/scale-to-width-down/800?cb=20250610101919",
+  "crop": [
+   0.52,
+   0.33,
+   0.28
+  ]
+ },
+ "Guardians of the Galaxy - Ronan the Accuser": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/c/c2/Ronan%27sFigure/revision/latest/scale-to-width-down/270?cb=20140729175837",
+  "crop": [
+   0.36,
+   0.15,
+   0.24
+  ]
+ },
+ "Lilo & Stitch - Stitch": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/d/d6/StitchFigure.jpg/revision/latest/scale-to-width-down/307?cb=20140716150008",
+  "crop": [
+   0.55,
+   0.2,
+   0.32
+  ]
+ },
+ "Ultimate Spider-Man - Spider-Man": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/d/d6/Gallery-SpiderMan-Spider-Man.jpg/revision/latest/scale-to-width-down/324?cb=20200415234521",
+  "crop": [
+   0.48,
+   0.27,
+   0.2
+  ]
+ }
 }
