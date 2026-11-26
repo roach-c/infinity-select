@@ -209,7 +209,7 @@
         } else c.append(img(f.img, f.name));
         c.append(h('span', 'v', VER[f.ver]));
         if (f.variant) c.append(h('span', 'vr', f.variant));
-        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? 'Toy Box Game' : f.cat === 1 ? 'Play Set' : f.franchise))); c.append(cn);
+        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? (f.ver < 2 ? '2.0 · Unlocks its toys in 3.0' : 'Toy Box Game') : f.cat === 1 ? 'Play Set' : f.franchise))); c.append(cn);
         c.onclick = () => place(f);
         g.append(c); n++;
       });
