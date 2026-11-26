@@ -21,6 +21,8 @@
   const TEST_SETS = /Toy Story in Space|Guardians of the Galaxy Play Set|Spider-Man Play Set|The Avengers Play Set/i;
   // Toy Box games tested 2026-11-25: all work except Stitch's Tropical Rescue
   const BROKEN_TOYBOX = /Stitch's Tropical Rescue/i;
+  // characters added in later updates that v1.00 doesn't know (tested 2026-11-25)
+  const BROKEN_CHARS = /Looking Glass - Time$/i;
   const PIXAR = /cars|monsters|incredibles|toy story|finding (nemo|dory)|inside out|good dinosaur|brave|up\b|wall-?e|ratatouille|a bug|pixar/i;
   const MARVEL = /marvel|avengers|guardians|spider|captain america|ant-man|hulk|iron man|thor\b/i;
   const SW = /star wars/i;
@@ -193,7 +195,8 @@
     if (f.variant) return false;               // hide Crystal and Light FX duplicates
     if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw)) && !TEST_SETS.test(f.raw)) return false;
     if (LOCKED.test(f.raw)) return false;
-    if (f.cat === 3 && BROKEN_TOYBOX.test(f.raw)) return false;      // tested 2026-11-25: still asks for the dead activation code
+    if (f.cat === 3 && BROKEN_TOYBOX.test(f.raw)) return false;
+    if (f.cat === 0 && BROKEN_CHARS.test(f.raw)) return false;      // tested 2026-11-25: still asks for the dead activation code
     if (!q && k !== kind) return false;
     if (uni !== 'all' && f.uni !== uni) return false;
     if (ver >= 0 && f.ver !== ver) return false;
