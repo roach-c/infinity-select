@@ -68,7 +68,8 @@ for name, v in img.items():
         bg = Image.new("RGBA", im.size, (235, 235, 235, 255)); bg.alpha_composite(im)
         thumbs.append((name, bg.convert("RGB").crop((int(cx - s), int(cy - s), int(cx + s), int(cy + s))).resize((96, 96))))
 open("docs/images.js", "w").write("window.INF_IMG=" + json.dumps(img, separators=(",", ":"), ensure_ascii=False) +
-                                  ";\nwindow.INF_FACE=" + json.dumps(face, separators=(",", ":"), ensure_ascii=False) + ";\n")
+                                  ";\nwindow.INF_FACE=" + json.dumps(face, separators=(",", ":"), ensure_ascii=False) +
+                                  ";\nwindow.INF_POS=" + open("tools/set_focus.json").read().replace("\n", "") + ";\n")
 print("images", len(img), "faces", len(face))
 if sheet_out:
     c = 12; sh = Image.new("RGB", (c * 100, ((len(thumbs) + c - 1) // c) * 110), "white"); d = ImageDraw.Draw(sh)

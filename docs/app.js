@@ -2,7 +2,7 @@
    Loaded by a small stub page served from the PS4 (port 8080), so every /api call
    below is same-origin with the plugin. */
 (function () {
-  const IMG = window.INF_IMG || {}, FACE = window.INF_FACE || {};
+  const IMG = window.INF_IMG || {}, FACE = window.INF_FACE || {}, POS = window.INF_POS || {};
   const VER = ['1.0', '2.0', '3.0'];
   // plugin slot ids
   const SLOT = { P1: 0, P2: 1, HEX: [2, 7, 8], D1: [3, 4], D2: [5, 6] };
@@ -31,7 +31,7 @@
     let name, franchise, kindOf = '', variant = '';
     if (e[1] === 0) { franchise = parts[0]; name = parts.slice(1).join(' - ') || parts[0]; }
     else if (e[1] === 2) { franchise = parts[0]; name = parts[1] || raw; kindOf = parts[2] || ''; }
-    else { franchise = ''; name = raw.replace(/\s*\(.*?\)\s*/g, ' ').trim(); }
+    else { franchise = parts.length > 1 ? parts[0] : ''; name = parts[parts.length - 1].replace(/\s*\(.*?\)\s*/g, ' ').trim(); }
     const m = name.match(/\((Crystal|Light FX)\)/i);
     if (m) { variant = m[1]; name = name.replace(m[0], '').trim(); }
     const all = raw;
@@ -41,7 +41,7 @@
     const u = SW.test(all) ? 'starwars' : MARVEL.test(all) ? 'marvel' : PIXAR.test(all) ? 'pixar' : 'disney';
     // round discs = abilities; hex discs = toys and customization
     const disc = e[1] === 2 ? (/^Ability/i.test(kindOf) ? 'round' : 'hexa') : '';
-    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: (Array.isArray(IMG[key]) ? IMG[key][0] : IMG[key]) || '', frame: Array.isArray(IMG[key]) ? IMG[key].slice(1) : null, face: FACE[key] || null };
+    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: (Array.isArray(IMG[key]) ? IMG[key][0] : IMG[key]) || '', frame: Array.isArray(IMG[key]) ? IMG[key].slice(1) : null, face: FACE[key] || null, pos: POS[raw] || '' };
   }
   const colorOf = u => (UNI.find(x => x[0] === u) || [])[2] || 'var(--other)';
 
@@ -147,7 +147,7 @@
       b.innerHTML = ''; b.classList.toggle('empty', !f); b.title = f ? f.name : TITLE[s];
       if (!f) { b.append(h('span', 'lb', LABEL[s])); return; }
       if (s <= 1) b.append(face(f, 'padface'));
-      else { const w = h('div', 'art'); w.append(img(f.img, f.name)); b.append(w); }
+      else { const w = h('div', 'art'), im = img(f.img, f.name); if (f.pos) im.style.objectPosition = f.pos; w.append(im); b.append(w); }
       if (s <= 2) b.append(xBtn(s));
     });
     const nm = (s, el) => { const f = info(ST.s[s]); el.innerHTML = ''; el.classList.toggle('empty', !f);
@@ -199,10 +199,13 @@
       .forEach(f => {
         const c = h('button', 'card' + (f.disc ? ' ' + f.disc : '') + (f.i === on ? ' cur' : ''));
         c.style.setProperty('--c', colorOf(f.uni));
-        if (f.cat === 0) { c.classList.add('char'); c.append(face(f)); } else c.append(img(f.img, f.name));
+        if (f.cat === 0) { c.classList.add('char'); c.append(face(f)); }
+        else if (f.cat === 1 || f.cat === 3) {          // play sets and toy boxes: wide poster cards
+          c.classList.add('poster'); const im = img(f.img, f.name); if (f.pos) im.style.objectPosition = f.pos; c.append(im);
+        } else c.append(img(f.img, f.name));
         c.append(h('span', 'v', VER[f.ver]));
         if (f.variant) c.append(h('span', 'vr', f.variant));
-        const cn = h('div', 'cn', f.name); cn.append(h('small', '', f.kindOf || f.franchise || 'Play Set')); c.append(cn);
+        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? 'Toy Box Game' : f.cat === 1 ? 'Play Set' : f.franchise))); c.append(cn);
         c.onclick = () => place(f);
         g.append(c); n++;
       });

@@ -141,3 +141,11 @@ html,html body{background-color:var(--bg)!important;color:var(--tx)!important}
 .pname.empty b{color:var(--mut);font-weight:500}
 .pad.hex{aspect-ratio:.866}
 .portal{margin-top:14px}
+/* play set / toy box posters */
+.card.poster{grid-column:1/-1;aspect-ratio:16/7;border:0;box-shadow:0 6px 18px rgba(30,50,110,.18)}
+.card.poster::before{display:none}
+.card.poster img{object-fit:cover;padding:0}
+.card.poster .cn{padding:40px 14px 12px;font-size:19px;font-weight:800;color:#fff;background:linear-gradient(transparent,rgba(6,10,30,.82) 70%);text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.card.poster .cn small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffd36b}
+.card.poster .v{background:rgba(255,255,255,.92)}
+.card.poster.cur{box-shadow:0 0 0 3px var(--glow),0 6px 18px rgba(30,50,110,.18)}
