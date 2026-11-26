@@ -17,6 +17,8 @@
   // v1.00 still has the 2015 pre-release lock: Force Awakens pieces ask for an activation code
   // from a Disney site that no longer exists, so they can't be used on this copy.
   const LOCKED = /Force Awakens/i;
+  // Toy Box games tested 2026-11-25: all work except Stitch's Tropical Rescue
+  const BROKEN_TOYBOX = /Stitch's Tropical Rescue/i;
   const PIXAR = /cars|monsters|incredibles|toy story|finding (nemo|dory)|inside out|good dinosaur|brave|up\b|wall-?e|ratatouille|a bug|pixar/i;
   const MARVEL = /marvel|avengers|guardians|spider|captain america|ant-man|hulk|iron man|thor\b/i;
   const SW = /star wars/i;
@@ -188,7 +190,8 @@
     const k = f.cat === 0 ? 'char' : f.cat === 1 ? 'play' : f.cat === 3 ? 'toy' : f.disc;
     if (f.variant) return false;               // hide Crystal and Light FX duplicates
     if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw))) return false;
-    if (LOCKED.test(f.raw)) return false;      // tested 2026-11-25: still asks for the dead activation code
+    if (LOCKED.test(f.raw)) return false;
+    if (f.cat === 3 && BROKEN_TOYBOX.test(f.raw)) return false;      // tested 2026-11-25: still asks for the dead activation code
     if (!q && k !== kind) return false;
     if (uni !== 'all' && f.uni !== uni) return false;
     if (ver >= 0 && f.ver !== ver) return false;
@@ -209,7 +212,7 @@
         } else c.append(img(f.img, f.name));
         c.append(h('span', 'v', VER[f.ver]));
         if (f.variant) c.append(h('span', 'vr', f.variant));
-        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? (f.ver < 2 ? '2.0 · Unlocks its toys in 3.0' : 'Toy Box Game') : f.cat === 1 ? 'Play Set' : f.franchise))); c.append(cn);
+        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? 'Toy Box Game' : f.cat === 1 ? 'Play Set' : f.franchise))); c.append(cn);
         c.onclick = () => place(f);
         g.append(c); n++;
       });
