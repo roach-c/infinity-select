@@ -109,3 +109,35 @@ html,html body{background-color:var(--bg)!important;color:var(--tx)!important}
 /* one frame of a turntable sheet */
 .pl .pic{position:absolute;inset:0;padding:14px 8px 54px;display:flex;align-items:center;justify-content:center;z-index:1;pointer-events:none}
 .pic .fr{position:relative;width:100%;max-height:100%;overflow:hidden}
+/* ===== Infinity Base layout ===== */
+.portal{position:relative;width:100%;max-width:520px;margin:6px auto 0;aspect-ratio:400/372}
+.portal .plate{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 10px 24px rgba(30,50,110,.18))}
+.plate .well{fill:#e9eef9;stroke:#cfd8ec;stroke-width:2}
+.plate .well.p1{stroke:color-mix(in srgb,var(--p1) 45%,#cfd8ec)}.plate .well.p2{stroke:color-mix(in srgb,var(--p2) 45%,#cfd8ec)}
+.pad{position:absolute;aspect-ratio:1;padding:0;display:block}
+.pad.round{border-radius:50%;--c:var(--p1);background:radial-gradient(circle at 50% 40%,#fff,#e4eaf7);box-shadow:0 0 0 3px var(--c),0 0 18px color-mix(in srgb,var(--c) 55%,transparent),inset 0 -6px 14px rgba(30,50,110,.12)}
+.pad.round.p2{--c:var(--p2)}
+.pad.round.empty{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 55%,#d5dcee),inset 0 -6px 14px rgba(30,50,110,.08)}
+.pad .padface{position:absolute;inset:0;border-radius:50%}
+.pad .padface.whole img{object-fit:cover}
+.pad.hex{clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--hex);aspect-ratio:1/1.1547}
+.pad.hex .art,.pad.hex.empty::before{position:absolute;inset:3px;clip-path:inherit;background:linear-gradient(#fff,#e7ecf8);overflow:hidden}
+.pad.hex.empty{background:#cfd8ec}.pad.hex.empty::before{content:""}
+.pad.hex .art img{width:100%;height:100%;object-fit:cover}
+.pad.hex.mini .art img{object-fit:cover}
+.pad.chip{border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--c,var(--p1)),0 2px 6px rgba(30,50,110,.15);overflow:hidden}
+.pad.chip.p2{--c:var(--p2)}
+.pad.chip .art{position:absolute;inset:0}.pad.chip .art img{width:100%;height:100%;object-fit:cover}
+.pad .lb{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mut);z-index:1}
+.pad.round .lb{font-size:20px;color:var(--c)}
+.pad.chip .lb{font-size:7.5px;letter-spacing:.06em}
+.pad.mini .lb{font-size:16px;font-weight:600}
+.pad .x{top:6%;right:6%;bottom:auto;transform:none;width:26px;height:26px;font-size:12px;z-index:3}
+.pad.hex .x{top:22%;right:16%}
+.names{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:520px;margin:10px auto 0;text-align:center}
+.pname small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.pname b{display:block;font-size:13.5px;line-height:1.2;margin-top:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.pname.p1 small{color:var(--p1)}.pname.p2 small{color:var(--p2)}.pname.hexname small{color:#c9900f}
+.pname.empty b{color:var(--mut);font-weight:500}
+.pad.hex{aspect-ratio:.866}
+.portal{margin-top:14px}

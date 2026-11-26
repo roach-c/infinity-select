@@ -72,6 +72,43 @@
   }
 
   /* ---------- base screen ---------- */
+  // Layout of the real Infinity Base seen from above, in a 400 x 330 box:
+  // hexagon pad top center, Player 1 pad lower left, Player 2 pad lower right.
+  // hexes use circumradius r (pointy top): width 1.732r, height 2r
+  const PADS = { 2: [200, 98, 70], 0: [102, 236, 68], 1: [298, 236, 68] };
+  const MINIHEX = { 7: [84, 82, 26], 8: [316, 82, 26] };
+  const DISCS = { 3: [66, 344, 21], 4: [138, 344, 21], 5: [262, 344, 21], 6: [334, 344, 21] };
+  const VW = 400, VH = 372;
+  function pos(el, [cx, cy, r], hex) {
+    const w = hex ? r * Math.sqrt(3) : 2 * r;
+    Object.assign(el.style, { left: ((cx - w / 2) / VW * 100) + '%', top: ((cy - r) / VH * 100) + '%', width: (w / VW * 100) + '%' });
+    return el;
+  }
+  function hexPath(cx, cy, r) {
+    const pts = []; for (let k = 0; k < 6; k++) { const a = Math.PI / 180 * (60 * k - 90); pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1)); }
+    return 'M' + pts.join('L') + 'Z';
+  }
+  function plateSVG() {
+    // union of the pads, drawn twice: a fat outline underneath, then the fill
+    const shapes = (grow) => {
+      const [hx, hy, hr] = PADS[2], j = `stroke-linejoin="round" stroke-width="${44 + grow * 2}"`;
+      let g = `<path d="${hexPath(hx, hy, hr + 4)}" ${j}/>`;
+      for (const k of [0, 1]) { const [x, y, r] = PADS[k]; g += `<circle cx="${x}" cy="${y}" r="${r + 22 + grow}"/>`; }
+      g += `<ellipse cx="200" cy="${PADS[0][1] + 6}" rx="${110 + grow}" ry="${70 + grow}"/>`;
+      return g;
+    };
+    return `<svg class="plate" viewBox="0 0 ${VW} ${VH}" aria-hidden="true">
+      <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe6f5"/></linearGradient>
+      <radialGradient id="pglow" cx=".5" cy=".55" r=".6"><stop offset="0" stop-color="#9fd3ff" stop-opacity=".55"/><stop offset="1" stop-color="#9fd3ff" stop-opacity="0"/></radialGradient></defs>
+      <g fill="#c9d3ea" stroke="#c9d3ea">${shapes(5)}</g>
+      <g fill="url(#pg)" stroke="url(#pg)">${shapes(0)}</g>
+      <ellipse cx="200" cy="200" rx="170" ry="140" fill="url(#pglow)"/>
+      <path class="well" d="${hexPath(PADS[2][0], PADS[2][1], PADS[2][2] + 8)}"/>
+      ${[7, 8].map(k => `<path class="well" d="${hexPath(MINIHEX[k][0], MINIHEX[k][1], MINIHEX[k][2] + 5)}"/>`).join('')}
+      <circle class="well p1" cx="${PADS[0][0]}" cy="${PADS[0][1]}" r="${PADS[0][2] + 8}"/>
+      <circle class="well p2" cx="${PADS[1][0]}" cy="${PADS[1][1]}" r="${PADS[1][2] + 8}"/>
+    </svg>`;
+  }
   function build() {
     document.body.innerHTML = '';
     const top = h('div', 'top');
@@ -79,55 +116,37 @@
     const conn = h('div', 'conn'); conn.id = 'conn'; conn.append(h('i'), h('span', '', 'Waiting for the game'));
     top.append(brand, conn);
 
-    const base = h('div', 'base');
-    const players = h('div', 'players');
-    players.append(plCard(0, 'p1', 'P1'), plCard(1, 'p2', 'P2'));
-    const discs = h('div', 'discs');
-    [[3, 'p1'], [4, 'p1'], [5, 'p2'], [6, 'p2']].forEach(([s, c]) => discs.append(discCard(s, c)));
-    const hs = h('div', 'sec', 'Hexagon · Play Sets, Toy Boxes, Toys');
-    const hexs = h('div', 'hexs');
-    SLOT.HEX.forEach((s, n) => hexs.append(hexCard(s, n + 1)));
-    const ds = h('div', 'sec', 'Power Discs');
-    base.append(players, ds, discs, hs, hexs, h('div', 'hint', 'Tap any slot to choose. Changes apply instantly, even mid game.'));
+    const portal = h('div', 'portal'); portal.innerHTML = plateSVG();
+    for (const s of [0, 1]) { const b = pos(h('button', 'pad round ' + (s ? 'p2' : 'p1')), PADS[s]); b.dataset.s = s; b.onclick = () => openPick(s); portal.append(b); }
+    { const b = pos(h('button', 'pad hex'), PADS[2], true); b.dataset.s = 2; b.onclick = () => openPick(2); portal.append(b); }
+    for (const s of [7, 8]) { const b = pos(h('button', 'pad hex mini'), MINIHEX[s], true); b.dataset.s = s; b.onclick = () => openPick(s); portal.append(b); }
+    for (const s of [3, 4, 5, 6]) { const b = pos(h('button', 'pad chip ' + (s < 5 ? 'p1' : 'p2')), DISCS[s]); b.dataset.s = s; b.onclick = () => openPick(s); portal.append(b); }
 
+    const names = h('div', 'names');
+    names.append(h('div', 'pname p1'), h('div', 'pname hexname'), h('div', 'pname p2'));
+    const base = h('div', 'base');
+    base.append(portal, names, h('div', 'hint', 'Tap a pad to choose. Small hexes stack extra hex discs; small circles are power discs. Changes apply instantly.'));
     document.body.append(top, base, picker(), h('div', 'toast'));
-  }
-  function plCard(s, c, tag) {
-    const b = h('button', 'pl ' + c); b.dataset.s = s; b.onclick = () => openPick(s);
-    return b;
-  }
-  function discCard(s, c) { const b = h('button', 'disc ' + c); b.dataset.s = s; b.onclick = () => openPick(s); return b; }
-  function hexCard(s, n) {
-    const w = h('div'); const b = h('button', 'hx'); b.dataset.s = s; b.onclick = () => openPick(s);
-    b.append(h('div', 'in')); w.append(b, h('div', 'slotname')); w.dataset.n = n; return w;
   }
   function xBtn(s) {
     const x = h('button', 'x', '✕');
     x.onclick = async ev => { ev.stopPropagation(); try { ST = await J('/api/remove?slot=' + s); paint(); toast('Removed'); } catch (e) { toast('Could not reach the PS4'); } };
     return x;
   }
+  const LABEL = { 0: 'P1', 1: 'P2', 2: 'PLAY SET', 7: '+', 8: '+', 3: 'DISC', 4: 'DISC', 5: 'DISC', 6: 'DISC' };
   function paint() {
     const conn = $('#conn'); conn.classList.toggle('on', !!ST.c); $('span', conn).textContent = ST.c ? 'Game connected' : 'Waiting for the game';
-    document.querySelectorAll('.pl').forEach(b => {
-      const s = +b.dataset.s, f = info(ST.s[s]); b.innerHTML = '';
-      b.classList.toggle('empty', !f);
-      b.append(h('span', 'tag', s === 0 ? 'P1' : 'P2'));
-      if (f) { b.append(pic(f)); if (f.face) b.append(face(f, 'hud')); const n = h('div', 'nm', f.name); n.prepend(h('small', '', f.franchise)); b.append(n, xBtn(s)); }
-      else { b.append(h('div', 'plus', '+'), h('div', 'nm', 'Choose a character')); }
+    document.querySelectorAll('.pad').forEach(b => {
+      const s = +b.dataset.s, f = info(ST.s[s]);
+      b.innerHTML = ''; b.classList.toggle('empty', !f); b.title = f ? f.name : TITLE[s];
+      if (!f) { b.append(h('span', 'lb', LABEL[s])); return; }
+      if (s <= 1) b.append(face(f, 'padface'));
+      else { const w = h('div', 'art'); w.append(img(f.img, f.name)); b.append(w); }
+      if (s <= 2) b.append(xBtn(s));
     });
-    document.querySelectorAll('.disc').forEach(b => {
-      const s = +b.dataset.s, f = info(ST.s[s]); b.innerHTML = '';
-      if (f) { b.append(img(f.img, f.name), xBtn(s)); b.title = f.name; }
-      else b.append(h('div', 'lb', (s < 5 ? 'P1' : 'P2') + '\nDISC'));
-    });
-    document.querySelectorAll('.hexs > div').forEach(w => {
-      const b = $('.hx', w), s = +b.dataset.s, f = info(ST.s[s]), inn = $('.in', b);
-      inn.innerHTML = ''; b.querySelector('.x')?.remove();
-      b.classList.toggle('empty', !f);
-      if (f) { inn.append(img(f.img, f.name)); b.append(xBtn(s)); }
-      else inn.append(h('div', 'lb', 'HEX ' + w.dataset.n));
-      $('.slotname', w).textContent = f ? f.name : 'Empty';
-    });
+    const nm = (s, el) => { const f = info(ST.s[s]); el.innerHTML = ''; el.classList.toggle('empty', !f);
+      el.append(h('small', '', s === 2 ? 'Play Set' : 'Player ' + (s + 1)), h('b', '', f ? f.name : 'Empty')); };
+    nm(0, $('.pname.p1')); nm(2, $('.pname.hexname')); nm(1, $('.pname.p2'));
   }
 
   /* ---------- picker ---------- */
