@@ -206,6 +206,15 @@
   function grid() {
     const g = $('#grid'); g.innerHTML = ''; let n = 0;
     const on = ST.s[cur];
+    // "None" clears this slot
+    const none = h('button', 'card nonecard' + (on < 0 ? ' cur' : ''));
+    none.append(h('div', 'nonex', '⦸'));
+    const nc = h('div', 'cn', 'None'); nc.append(h('small', '', on < 0 ? 'Slot is empty' : 'Remove from ' + TITLE[cur])); none.append(nc);
+    none.onclick = async () => {
+      if (on < 0) { closePick(); return; }
+      try { ST = await J('/api/remove?slot=' + cur); paint(); closePick(); toast('Cleared ' + TITLE[cur]); } catch (e) { toast('Could not reach the PS4'); }
+    };
+    g.append(none);
     LIB.map((_, i) => info(i)).filter(matches)
       .sort((a, b) => a.uni.localeCompare(b.uni) || a.franchise.localeCompare(b.franchise) || a.name.localeCompare(b.name))
       .forEach(f => {

@@ -149,3 +149,8 @@ html,html body{background-color:var(--bg)!important;color:var(--tx)!important}
 .card.poster .cn small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffd36b}
 .card.poster .v{background:rgba(255,255,255,.92)}
 .card.poster.cur{box-shadow:0 0 0 3px var(--glow),0 6px 18px rgba(30,50,110,.18)}
+/* "None" card: clears the slot */
+.card.nonecard{background:var(--panel2);border-style:dashed}
+.card.nonecard::before{display:none}
+.card.nonecard .nonex{position:absolute;inset:0 0 30% 0;display:grid;place-items:center;font-size:44px;color:var(--mut)}
+.card.nonecard .cn{background:none}
