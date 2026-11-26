@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#05070f"><title>Infinity Base</title><link rel="stylesheet" href="https://roach-c.github.io/infinity-select/app.css"></head><body style="background:#05070f;color:#eef2ff;font:15px -apple-system,sans-serif">
+<div id="fb" style="padding:20px">Loading character select…</div>
+<script src="https://roach-c.github.io/infinity-select/images.js"></script>
+<script src="https://roach-c.github.io/infinity-select/app.js"></script>
+<script>
+/* fallback when the phone has no internet: plain list that still works */
+if(!window.INF_SELECT_LOADED){(async()=>{const J=u=>fetch(u).then(r=>r.json()),T=['P1','P2','Hex 1','P1 disc 1','P1 disc 2','P2 disc 1','P2 disc 2','Hex 2','Hex 3'];let L=await J('/api/lib'),S,c=0;const f=document.getElementById('fb');
+async function d(){S=await J('/api/state');f.innerHTML='<p>Offline mode (no internet for the art). Pick slot, then tap a name.</p>'+T.map((t,i)=>'<button data-s='+i+' style="margin:3px;padding:8px;border-radius:8px;border:1px solid #446;background:'+(i==c?'#2f8cff':'#141c36')+';color:#fff">'+t+': '+(S.s[i]<0?'empty':L[S.s[i]][0].split(' - ').slice(-1))+'</button>').join('')+'<input id=q placeholder=Search style="display:block;width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid #446;background:#0d1326;color:#fff"><div id=l></div>';
+f.querySelectorAll('button').forEach(b=>b.onclick=()=>{c=+b.dataset.s;d()});const q=document.getElementById('q'),l=document.getElementById('l');
+const r=()=>{const v=q.value.toLowerCase();l.innerHTML='';L.forEach((e,i)=>{if(v&&e[0].toLowerCase().indexOf(v)<0)return;const b=document.createElement('button');b.textContent=e[0];b.style.cssText='display:block;width:100%;text-align:left;margin:2px 0;padding:9px;border:0;border-radius:6px;background:#141c36;color:#eef2ff';b.onclick=async()=>{await J('/api/place?slot='+c+'&id='+i);d()};l.append(b)})};q.oninput=r;r()}
+d()})()}
+</script></body></html>
