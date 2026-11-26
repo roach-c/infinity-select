@@ -17,6 +17,8 @@
   // v1.00 still has the 2015 pre-release lock: Force Awakens pieces ask for an activation code
   // from a Disney site that no longer exists, so they can't be used on this copy.
   const LOCKED = /Force Awakens/i;
+  // 1.0 and 2.0 play sets, shown for testing on 3.0 (expected to flash)
+  const TEST_SETS = /Cars Play Set|Pirates of the Caribbean|Lone Ranger Play Set|Toy Story in Space|Guardians of the Galaxy Play Set|Spider-Man Play Set|The Avengers Play Set/i;
   // Toy Box games tested 2026-11-25: all work except Stitch's Tropical Rescue
   const BROKEN_TOYBOX = /Stitch's Tropical Rescue/i;
   const PIXAR = /cars|monsters|incredibles|toy story|finding (nemo|dory)|inside out|good dinosaur|brave|up\b|wall-?e|ratatouille|a bug|pixar/i;
@@ -189,7 +191,7 @@
   function matches(f) {
     const k = f.cat === 0 ? 'char' : f.cat === 1 ? 'play' : f.cat === 3 ? 'toy' : f.disc;
     if (f.variant) return false;               // hide Crystal and Light FX duplicates
-    if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw))) return false;
+    if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw)) && !TEST_SETS.test(f.raw)) return false;
     if (LOCKED.test(f.raw)) return false;
     if (f.cat === 3 && BROKEN_TOYBOX.test(f.raw)) return false;      // tested 2026-11-25: still asks for the dead activation code
     if (!q && k !== kind) return false;
@@ -212,7 +214,7 @@
         } else c.append(img(f.img, f.name));
         c.append(h('span', 'v', VER[f.ver]));
         if (f.variant) c.append(h('span', 'vr', f.variant));
-        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? 'Toy Box Game' : f.cat === 1 ? 'Play Set' : f.franchise))); c.append(cn);
+        const cn = h('div', 'cn', f.name.replace(/ Play Set$/, '')); cn.append(h('small', '', f.kindOf || (f.cat === 3 ? 'Toy Box Game' : f.cat === 1 ? (TEST_SETS.test(f.raw) ? VER[f.ver] + ' Play Set · Testing' : 'Play Set') : f.franchise))); c.append(cn);
         c.onclick = () => place(f);
         g.append(c); n++;
       });
