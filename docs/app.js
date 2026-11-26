@@ -11,6 +11,9 @@
   const UNI = [
     ['all', 'All', ''], ['disney', 'Disney', 'var(--disney)'], ['pixar', 'Pixar', 'var(--pixar)'],
     ['marvel', 'Marvel', 'var(--marvel)'], ['starwars', 'Star Wars', 'var(--starwars)']];
+  // Play sets that actually load on this copy (v1.00, no update). Others just flash.
+  // Add names here if the 1.06 update gets installed.
+  const PLAYABLE_SETS = [/Twilight of the Republic/i];
   const PIXAR = /cars|monsters|incredibles|toy story|finding (nemo|dory)|inside out|good dinosaur|brave|up\b|wall-?e|ratatouille|a bug|pixar/i;
   const MARVEL = /marvel|avengers|guardians|spider|captain america|ant-man|hulk|iron man|thor\b/i;
   const SW = /star wars/i;
@@ -32,10 +35,13 @@
     const m = name.match(/\((Crystal|Light FX)\)/i);
     if (m) { variant = m[1]; name = name.replace(m[0], '').trim(); }
     const all = raw;
+    // Crystal / Light FX figures borrow the regular figure's picture and face crop
+    const base = raw.replace(/\s*\((Crystal|Light FX)\)/i, '').trim();
+    const key = (variant && (FACE[base] || IMG[base])) ? base : raw;
     const u = SW.test(all) ? 'starwars' : MARVEL.test(all) ? 'marvel' : PIXAR.test(all) ? 'pixar' : 'disney';
     // round discs = abilities; hex discs = toys and customization
     const disc = e[1] === 2 ? (/^Ability/i.test(kindOf) ? 'round' : 'hexa') : '';
-    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: (Array.isArray(IMG[raw]) ? IMG[raw][0] : IMG[raw]) || '', frame: Array.isArray(IMG[raw]) ? IMG[raw].slice(1) : null, face: FACE[raw] || null };
+    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: (Array.isArray(IMG[key]) ? IMG[key][0] : IMG[key]) || '', frame: Array.isArray(IMG[key]) ? IMG[key].slice(1) : null, face: FACE[key] || null };
   }
   const colorOf = u => (UNI.find(x => x[0] === u) || [])[2] || 'var(--other)';
 
@@ -178,6 +184,7 @@
   function matches(f) {
     const k = f.cat === 0 ? 'char' : f.cat === 1 ? 'play' : f.cat === 3 ? 'toy' : f.disc;
     if (f.variant) return false;               // hide Crystal and Light FX duplicates
+    if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw))) return false;
     if (!q && k !== kind) return false;
     if (uni !== 'all' && f.uni !== uni) return false;
     if (ver >= 0 && f.ver !== ver) return false;

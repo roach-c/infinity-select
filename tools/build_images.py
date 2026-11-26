@@ -13,6 +13,7 @@ ADOPT_BETTER = {"Inside Out - Sadness",
                 "Peter Pan - Peter Pan", "Star Wars - Luke Skywalker", "Star Wars The Clone Wars - Obi-Wan Kenobi",
                 "Star Wars The Clone Wars - Yoda"}
 SKIP_SPRITE = {"Guardians of the Galaxy - Rocket Raccoon", "Guardians of the Galaxy - Ronan the Accuser", "Lilo & Stitch - Stitch", "Ultimate Spider-Man - Spider-Man"}
+IMG_OVERRIDE = json.load(open("tools/image_overrides.json"))
 def get(u):
     for _ in range(5):
         try: return urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "infinity-select/1.0"}), timeout=60).read()
@@ -29,6 +30,7 @@ for r in M:
     if name in ADOPT_BETTER: img[name] = B[name]["url"]
     elif s and "render" in s["file"].lower() and "sprite" not in s["file"].lower(): img[name] = s["url"]
     elif s and "cols" in s and "Character-" not in base_file and name not in SKIP_SPRITE: img[name] = [s["full"], 0, 0, 1 / s["cols"], 1 / s["rows"]]
+    if name in IMG_OVERRIDE: img[name] = IMG_OVERRIDE[name]
     src[name] = img[name]
 
 def head(im):

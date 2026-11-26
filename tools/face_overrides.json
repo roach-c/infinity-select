@@ -111,8 +111,6 @@
    0.2
   ]
  },
- "Wreck-It Ralph - Vanellope von Schweetz": null,
- "Peter Pan - Peter Pan": null,
  "Big Hero 6 - Hiro Hamada": {
   "src": "https://static.wikia.nocookie.net/disney-infinity/images/f/f2/Hiro_Render_2.png/revision/latest/scale-to-width-down/800?cb=20250610101919",
   "crop": [
@@ -143,6 +141,14 @@
    0.48,
    0.27,
    0.2
+  ]
+ },
+ "Wreck-It Ralph - Vanellope von Schweetz": {
+  "src": "https://static.wikia.nocookie.net/disney-infinity/images/8/85/Character-WreckIt-Vanellope.png/revision/latest?cb=20200103030154",
+  "crop": [
+   0.5,
+   0.3,
+   0.3
   ]
  }
 }
