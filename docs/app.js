@@ -13,7 +13,7 @@
     ['marvel', 'Marvel', 'var(--marvel)'], ['starwars', 'Star Wars', 'var(--starwars)']];
   // Play sets that actually load on this copy (v1.00, no update). Others just flash.
   // Add names here if the 1.06 update gets installed.
-  const PLAYABLE_SETS = [/Twilight of the Republic/i, /Rise Against the Empire/i, /Inside Out Play Set/i];
+  const PLAYABLE_SETS = [/Twilight of the Republic/i, /Rise Against the Empire/i, /Inside Out Play Set/i, /Marvel Battlegrounds/i];   // Battlegrounds: testing, may need the 1.06 update
   // v1.00 still has the 2015 pre-release lock: Force Awakens pieces ask for an activation code
   // from a Disney site that no longer exists, so they can't be used on this copy.
   const LOCKED = /Force Awakens/i;
