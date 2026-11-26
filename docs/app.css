@@ -98,3 +98,11 @@ html,html body{background-color:var(--bg)!important;color:var(--tx)!important}
 .card::before{background:radial-gradient(90% 60% at 50% 35%,color-mix(in srgb,var(--c) 24%,transparent),transparent 72%)}
 .tab.on{color:var(--tx)}
 .back{color:var(--tx)}
+/* HUD style face portraits */
+.face{border-radius:50%;background-color:var(--panel2);background-repeat:no-repeat;overflow:hidden;position:relative}
+.face.whole img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;padding:0}
+.card.char .face{position:absolute;left:12%;right:12%;top:9%;aspect-ratio:1;border:3px solid var(--c);box-shadow:0 0 0 3px var(--panel),0 4px 14px rgba(30,50,110,.18)}
+.card.char{aspect-ratio:4/5}
+.pl .face.hud{position:absolute;top:44px;left:10px;width:54px;height:54px;border:3px solid var(--c);box-shadow:0 0 0 2px #fff;z-index:3}
+.face .fi{position:absolute;max-width:none;object-fit:fill;padding:0!important;inset:auto}
+.card.char .face img.fi{position:absolute}

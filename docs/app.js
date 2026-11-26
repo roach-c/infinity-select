@@ -2,7 +2,7 @@
    Loaded by a small stub page served from the PS4 (port 8080), so every /api call
    below is same-origin with the plugin. */
 (function () {
-  const IMG = window.INF_IMG || {};
+  const IMG = window.INF_IMG || {}, FACE = window.INF_FACE || {};
   const VER = ['1.0', '2.0', '3.0'];
   // plugin slot ids
   const SLOT = { P1: 0, P2: 1, HEX: [2, 7, 8], D1: [3, 4], D2: [5, 6] };
@@ -35,13 +35,26 @@
     const u = SW.test(all) ? 'starwars' : MARVEL.test(all) ? 'marvel' : PIXAR.test(all) ? 'pixar' : 'disney';
     // round discs = abilities; hex discs = toys and customization
     const disc = e[1] === 2 ? (/^Ability/i.test(kindOf) ? 'round' : 'hexa') : '';
-    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: IMG[raw] || '' };
+    return { i, raw, name, franchise, kindOf, variant, cat: e[1], ver: e[2], uni: u, disc, img: IMG[raw] || '', face: FACE[raw] || null };
   }
   const colorOf = u => (UNI.find(x => x[0] === u) || [])[2] || 'var(--other)';
 
   function img(src, alt) {
     const im = h('img'); im.alt = alt || ''; im.loading = 'lazy'; im.referrerPolicy = 'no-referrer'; im.decoding = 'async';
     if (src) im.src = src; im.onerror = () => im.remove(); return im;
+  }
+
+  // round head crop, like the in-game HUD portrait. f.face = [cx, cy, size, w, h] (fractions)
+  function face(f, cls) {
+    const d = h('div', 'face' + (cls ? ' ' + cls : ''));
+    if (!f.img) return d;
+    if (!f.face) { d.classList.add('whole'); d.append(img(f.img, f.name)); return d; }
+    const [cx, cy, sz, w, hh] = f.face, kx = w / (sz * hh), ky = 1 / sz;
+    const im = img(f.img, f.name); im.className = 'fi';
+    im.style.width = (kx * 100) + '%'; im.style.height = (ky * 100) + '%';
+    im.style.left = ((0.5 - cx * kx) * 100) + '%'; im.style.top = ((0.5 - cy * ky) * 100) + '%';
+    d.append(im);
+    return d;
   }
 
   /* ---------- base screen ---------- */
@@ -85,7 +98,7 @@
       const s = +b.dataset.s, f = info(ST.s[s]); b.innerHTML = '';
       b.classList.toggle('empty', !f);
       b.append(h('span', 'tag', s === 0 ? 'P1' : 'P2'));
-      if (f) { b.append(img(f.img, f.name)); const n = h('div', 'nm', f.name); n.prepend(h('small', '', f.franchise)); b.append(n, xBtn(s)); }
+      if (f) { b.append(img(f.img, f.name)); if (f.face) b.append(face(f, 'hud')); const n = h('div', 'nm', f.name); n.prepend(h('small', '', f.franchise)); b.append(n, xBtn(s)); }
       else { b.append(h('div', 'plus', '+'), h('div', 'nm', 'Choose a character')); }
     });
     document.querySelectorAll('.disc').forEach(b => {
@@ -145,7 +158,7 @@
       .forEach(f => {
         const c = h('button', 'card' + (f.disc ? ' ' + f.disc : '') + (f.i === on ? ' cur' : ''));
         c.style.setProperty('--c', colorOf(f.uni));
-        c.append(img(f.img, f.name));
+        if (f.cat === 0) { c.classList.add('char'); c.append(face(f)); } else c.append(img(f.img, f.name));
         c.append(h('span', 'v', VER[f.ver]));
         if (f.variant) c.append(h('span', 'vr', f.variant));
         const cn = h('div', 'cn', f.name); cn.append(h('small', '', f.kindOf || f.franchise || 'Play Set')); c.append(cn);
