@@ -22,7 +22,7 @@
   // Toy Box games tested 2026-11-25: all work except Stitch's Tropical Rescue
   const BROKEN_TOYBOX = /Stitch's Tropical Rescue/i;
   // characters added in later updates that v1.00 doesn't know (tested 2026-11-25)
-  const BROKEN_CHARS = /Looking Glass - Time$/i;
+  const BROKEN_CHARS = /^Alice Through the Looking Glass - /i;
   const PIXAR = /cars|monsters|incredibles|toy story|finding (nemo|dory)|inside out|good dinosaur|brave|up\b|wall-?e|ratatouille|a bug|pixar/i;
   const MARVEL = /marvel|avengers|guardians|spider|captain america|ant-man|hulk|iron man|thor\b/i;
   const SW = /star wars/i;
