@@ -14,6 +14,9 @@
   // Play sets that actually load on this copy (v1.00, no update). Others just flash.
   // Add names here if the 1.06 update gets installed.
   const PLAYABLE_SETS = [/Twilight of the Republic/i];
+  // v1.00 still has the 2015 pre-release lock: Force Awakens pieces ask for an activation code
+  // from a Disney site that no longer exists, so they can't be used on this copy.
+  const LOCKED = /Force Awakens/i;
   const PIXAR = /cars|monsters|incredibles|toy story|finding (nemo|dory)|inside out|good dinosaur|brave|up\b|wall-?e|ratatouille|a bug|pixar/i;
   const MARVEL = /marvel|avengers|guardians|spider|captain america|ant-man|hulk|iron man|thor\b/i;
   const SW = /star wars/i;
@@ -185,6 +188,7 @@
     const k = f.cat === 0 ? 'char' : f.cat === 1 ? 'play' : f.cat === 3 ? 'toy' : f.disc;
     if (f.variant) return false;               // hide Crystal and Light FX duplicates
     if (f.cat === 1 && !PLAYABLE_SETS.some(r => r.test(f.raw))) return false;
+    if (LOCKED.test(f.raw)) return false;
     if (!q && k !== kind) return false;
     if (uni !== 'all' && f.uni !== uni) return false;
     if (ver >= 0 && f.ver !== ver) return false;
